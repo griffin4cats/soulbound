@@ -1,6 +1,7 @@
 package net.fabricmc.example;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,5 +18,8 @@ public class ExampleMod implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldp, newp, alive) -> {
+			newp.getInventory().clone(oldp.getInventory());
+		});
 	}
 }
