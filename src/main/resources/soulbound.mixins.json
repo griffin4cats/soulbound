@@ -7,7 +7,6 @@
     "PlayerInventoryMixin"
   ],
   "client": [
-    "ExampleMixin"
   ],
   "injectors": {
     "defaultRequire": 1
