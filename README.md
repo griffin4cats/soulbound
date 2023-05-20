@@ -1,9 +1,9 @@
-# Fabric Example Mod
+# Soulbound
 
-## Setup
+A simple server-side implementation of the classic Soulbound enchantment.
+To make it server-side, it's not technically an enchantment.
+You can't get it via enchanting table, similar to mending.
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+## Incompatibilites
 
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+An incompatibility with ConfiguredKeepInventory is expected, though untested. A PR to CKI to fix compatibility is planned.
