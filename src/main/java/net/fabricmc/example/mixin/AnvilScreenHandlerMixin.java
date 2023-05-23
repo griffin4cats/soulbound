@@ -3,8 +3,6 @@ package net.fabricmc.example.mixin;
 import net.fabricmc.example.SoulboundUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.*;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -26,14 +24,14 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler{
     private void soulbound$anvilRecipe(CallbackInfo ci) {
         ItemStack first = this.input.getStack(0);
         ItemStack second = this.input.getStack(1);
-        boolean firstIsBook = first.getItem().getTranslationKey().equals("item.minecraft.book");
-        boolean secondIsBook = second.getItem().getTranslationKey().equals("item.minecraft.book");
+        boolean firstIsBook = first.getItem().getTranslationKey().equals("item.minecraft.enchanted_book");
+        boolean secondIsBook = second.getItem().getTranslationKey().equals("item.minecraft.enchanted_book");
         if (!(firstIsBook || secondIsBook)) return;
         ItemStack book = firstIsBook ? first : second;
         ItemStack item = firstIsBook ? second : first;
-        if (SoulboundUtil.hasSoulbound(book)) {
+        if (SoulboundUtil.itemHasSoulbound(book)) {
             ItemStack result = item.copy();
-            item.getOrCreateNbt().putByte("Soulbound", (byte) 1);
+            item.setNbt(SoulboundUtil.safeGiveSoulbound(item.getOrCreateNbt()));
             this.output.setStack(0, result);
             this.levelCost.set(15);
             this.sendContentUpdates();

@@ -4,7 +4,6 @@ import net.fabricmc.example.SoulboundInitializer;
 import net.fabricmc.example.SoulboundUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtElement;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -19,7 +18,7 @@ public class PlayerInventoryMixin {
             return ItemStack.EMPTY;
         }
         SoulboundInitializer.LOGGER.info(orig.getItem().getTranslationKey());
-        if (SoulboundUtil.hasSoulbound(orig))
+        if (SoulboundUtil.itemHasSoulbound(orig))
             return ItemStack.EMPTY;
         return orig;
     }
