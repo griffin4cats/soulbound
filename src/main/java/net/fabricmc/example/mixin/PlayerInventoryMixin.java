@@ -17,7 +17,7 @@ public class PlayerInventoryMixin {
         if (orig.isEmpty()) {
             return ItemStack.EMPTY;
         }
-        SoulboundInitializer.LOGGER.info(orig.getItem().getTranslationKey());
+        // SoulboundInitializer.LOGGER.info(orig.getItem().getTranslationKey());
         if (SoulboundUtil.itemHasSoulbound(orig))
             return ItemStack.EMPTY;
         return orig;

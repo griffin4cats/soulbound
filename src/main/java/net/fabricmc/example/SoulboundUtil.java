@@ -5,15 +5,15 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 
 public class SoulboundUtil {
+    public static final String enchantmentDisplay = "{\"text\": \"§5§lSoulbound\"}";
+    public static final String soulboundKey = "Soulbound";
     public static final NbtCompound soulboundCompound = giveSoulbound(new NbtCompound());
 
     public static boolean hasSoulbound(NbtCompound itemCompound) {
-        if (itemCompound.contains("Soulbound", NbtElement.BYTE_TYPE))
-            return itemCompound.getByte("Soulbound") == 1;
+        if (itemCompound.contains(soulboundKey, NbtElement.BYTE_TYPE))
+            return itemCompound.getByte(soulboundKey) == 1;
         return false;
     }
 
@@ -28,12 +28,12 @@ public class SoulboundUtil {
     }
 
     public static NbtCompound giveSoulbound(NbtCompound thisCompound){
-        thisCompound.putByte("Soulbound", (byte) 1);
+        thisCompound.putByte(soulboundKey, (byte) 1);
         if (!thisCompound.contains("display", NbtElement.COMPOUND_TYPE))
             thisCompound.put("display", new NbtCompound());
         NbtCompound display = thisCompound.getCompound("display");
         NbtList displayList = display.getList("Lore", NbtElement.STRING_TYPE);
-        displayList.add(NbtString.of((Text.Serializer.toJson(Text.literal("Soulbound... I hope?").formatted(Formatting.GRAY)))));
+        displayList.add(NbtString.of(enchantmentDisplay));
         display.put("Lore", displayList);
         return thisCompound;
     }

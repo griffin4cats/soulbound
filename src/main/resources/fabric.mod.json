@@ -6,11 +6,11 @@
   "name": "Soulbound",
   "description": "Simple server-side soulbound ",
   "authors": [
-    "Me!"
+    "griffin4cats"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/griffin4cats",
+    "sources": "https://github.com/griffin4cats/soulbound"
   },
 
   "license": "CC0-1.0",
