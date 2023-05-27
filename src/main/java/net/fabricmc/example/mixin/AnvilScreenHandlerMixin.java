@@ -28,11 +28,19 @@ public abstract class AnvilScreenHandlerMixin extends ForgingScreenHandler{
         boolean firstIsBook = first.isOf(Items.ENCHANTED_BOOK);
         boolean secondIsBook = second.isOf(Items.ENCHANTED_BOOK);
         if (!(firstIsBook || secondIsBook)) return;
-        ItemStack book = firstIsBook ? first : second;
-        ItemStack item = firstIsBook ? second : first;
-        if (SoulboundUtil.itemHasSoulbound(book)) {
+        ItemStack book = firstIsBook ? first.copy() : second.copy();
+        ItemStack item = firstIsBook ? second.copy() : first.copy();
+        if (SoulboundUtil.itemHasStrongSoulbound(item) || SoulboundUtil.itemHasWeakSoulbound(item)) return;
+        if (SoulboundUtil.itemHasStrongSoulbound(book)) {
             ItemStack result = item.copy();
-            result.setNbt(SoulboundUtil.giveSoulbound(item.getOrCreateNbt()));
+            result.setNbt(SoulboundUtil.giveStrongSoulbound(item.getOrCreateNbt()));
+            this.output.setStack(0, result);
+            this.levelCost.set(15);
+            this.sendContentUpdates();
+            ci.cancel();
+        } else if (SoulboundUtil.itemHasWeakSoulbound(book)) {
+            ItemStack result = item.copy();
+            result.setNbt(SoulboundUtil.giveWeakSoulbound(item.getOrCreateNbt()));
             this.output.setStack(0, result);
             this.levelCost.set(15);
             this.sendContentUpdates();

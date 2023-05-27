@@ -12,17 +12,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SoulboundInitializer implements ModInitializer {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("soulbound");
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
 		LOGGER.info("Soulbound enabled");
 		ServerPlayerEvents.COPY_FROM.register((oldp, newp, alive) -> {
 			newp.getInventory().clone(oldp.getInventory());
@@ -35,9 +28,41 @@ public class SoulboundInitializer implements ModInitializer {
 			if (LootTables.ANCIENT_CITY_CHEST.equals(identifier)) {
 				LootPool.Builder pb = LootPool.builder()
 					.with(ItemEntry.builder(Items.ENCHANTED_BOOK)
-						.weight(100)
-						.apply(SetNbtLootFunction.builder(SoulboundUtil.soulboundCompound)))
+						.weight(1)
+						.apply(SetNbtLootFunction.builder(SoulboundUtil.strongSoulboundCompound)))
+					.with(ItemEntry.builder(Items.AIR).weight(3));
+				builder.pool(pb);
+			}
+			if (LootTables.ANCIENT_CITY_CHEST.equals(identifier)) {
+				LootPool.Builder pb = LootPool.builder()
+						.with(ItemEntry.builder(Items.ENCHANTED_BOOK)
+								.weight(1)
+								.apply(SetNbtLootFunction.builder(SoulboundUtil.weakSoulboundCompound)))
+						.with(ItemEntry.builder(Items.AIR).weight(9));
+				builder.pool(pb);
+			}
+			if (LootTables.NETHER_BRIDGE_CHEST.equals(identifier)) {
+				LootPool.Builder pb = LootPool.builder()
+					.with(ItemEntry.builder(Items.ENCHANTED_BOOK)
+						.weight(1)
+						.apply(SetNbtLootFunction.builder(SoulboundUtil.weakSoulboundCompound)))
 					.with(ItemEntry.builder(Items.AIR).weight(1));
+				builder.pool(pb);
+			}
+			if (LootTables.BURIED_TREASURE_CHEST.equals(identifier)) {
+				LootPool.Builder pb = LootPool.builder()
+						.with(ItemEntry.builder(Items.ENCHANTED_BOOK)
+								.weight(1)
+								.apply(SetNbtLootFunction.builder(SoulboundUtil.weakSoulboundCompound)))
+						.with(ItemEntry.builder(Items.AIR).weight(1));
+				builder.pool(pb);
+			}
+			if (LootTables.RUINED_PORTAL_CHEST.equals(identifier)) {
+				LootPool.Builder pb = LootPool.builder()
+						.with(ItemEntry.builder(Items.ENCHANTED_BOOK)
+								.weight(1)
+								.apply(SetNbtLootFunction.builder(SoulboundUtil.weakSoulboundCompound)))
+						.with(ItemEntry.builder(Items.AIR).weight(4));
 				builder.pool(pb);
 			}
 		});
