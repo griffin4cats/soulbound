@@ -5,6 +5,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtString;
+import net.minecraft.util.math.random.Random;
 
 public class SoulboundUtil {
     public static final String strongEnchantmentDisplay = "{\"text\": \"§5§lSoulbound\"}";
@@ -22,11 +23,13 @@ public class SoulboundUtil {
             return orig;
         if (itemHasStrongSoulbound(orig)) {
             SoulboundInitializer.LOGGER.info("strong soulbound found :D");
+            orig = damageThis(orig);
             return ItemStack.EMPTY;
         }
         if (itemHasWeakSoulbound(orig)) {
             SoulboundInitializer.LOGGER.info("weak soulbound found :)");
             orig.setNbt(withoutWeakSoulbound(orig.getNbt()));
+            orig = damageThis(orig);
             return ItemStack.EMPTY;
         }
         return orig;
@@ -95,5 +98,34 @@ public class SoulboundUtil {
         display.put("Lore", displayList);
         thisCompound.put("display", display);
         return thisCompound;
+    }
+
+    public static NbtCompound withoutStrongSoulbound(NbtCompound thisCompound){
+        if (thisCompound.contains(strongSoulboundKey))
+            thisCompound.remove(strongSoulboundKey);
+        if (!thisCompound.contains("display", NbtElement.COMPOUND_TYPE)) {
+            return thisCompound;
+        }
+        NbtCompound display = thisCompound.getCompound("display");
+        NbtList displayList = display.getList("Lore", NbtElement.STRING_TYPE);
+        for (int i = 0; i < displayList.size(); i++){
+            if (displayList.get(i).asString().startsWith(strongEnchantmentDisplay)){
+                displayList.remove(i);
+            }
+        }
+        display.put("Lore", displayList);
+        thisCompound.put("display", display);
+        return thisCompound;
+    }
+
+    public static ItemStack damageThis(ItemStack stack){
+        if (!stack.isDamageable()) return stack;
+        int maxDamage = stack.getMaxDamage();
+        int currentDurability = (maxDamage - stack.getDamage());
+        int amountToDamage = (int) (0.1*maxDamage + 0.3*currentDurability);
+        if (amountToDamage > maxDamage)
+            amountToDamage = currentDurability;
+        stack.damage(amountToDamage, Random.create(), null);
+        return stack;
     }
 }
